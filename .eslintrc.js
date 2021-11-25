@@ -19,10 +19,13 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     // 'semi': ['error', 'always']
     '@typescript-eslint/member-delimiter-style': ['error', {
-      multiline: {
-        delimiter: 'none',
-        requireLast: true
+      "multiline": {
+        "delimiter": "none",
+        "requireLast": true
       }
-    }]
+    }],
+    'quotes': 'off',
+    'semi': 'off',
+    'comma-dangle': 'off'
   }
 }
