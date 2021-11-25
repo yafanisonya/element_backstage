@@ -9,7 +9,7 @@ import Vue from "vue";
 import request from "@/utils/request";
 request({
   method: "GET",
-  url: "/v2/api-docs?group=edu-front-boot",
+  url: "/boss/v2/api-docs?group=edu-boss-boot",
 }).then((res) => {
   console.log(res);
 });
