@@ -25,6 +25,7 @@ module.exports = {
     }],
     'quotes': ["error", "double"],
     "semi": ["error", "always"],
-    "comma-dangle": ["error", "always-multiline"]
+    "comma-dangle": ["error", "always-multiline"],
+    "space-before-function-paren": ["error", "never"]
   }
 }
