@@ -42,7 +42,7 @@ import Vue from "vue";
 import { Form } from "element-ui";
 import request from "@/utils/request";
 import qs from "qs";
-// import { login } from "@/services/user";
+import { login } from "@/services/user";
 
 export default Vue.extend({
   name: "LoginIndex",
@@ -92,24 +92,18 @@ export default Vue.extend({
         this.isLoginLoading = true;
 
         // 提交表单
-        const { data } = await request({
-          method: "POST",
-          url: "/front/user/login",
-          headers: { "content-type": "application/x-www-form-urlencoded" },
-          data: qs.stringify(this.form),
-        });
-        console.log(data);
+        const { data } = await login(this.form);
 
         // 失败提示
         if (data.state !== 1) {
           return this.$message.error(data.message);
+        } else {
+          // 成功跳转
+          this.$router.push({
+            name: "home",
+          });
+          this.$message.success("登录成功");
         }
-
-        // 成功跳转
-        this.$router.push({
-          name: "home",
-        });
-        this.$message.success("登录成功");
       } catch (err) {
         console.log("登录失败", err);
       }
