@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Layout from "@/layout/index.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,11 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     component: Layout,
+    // 验证用户身份
+    meta: {
+      // 添加该字段，表示进入这个路由是需要登录的
+      requiresAuth: true,
+    },
     children: [
       {
         path: "",
@@ -65,6 +71,27 @@ const routes: Array<RouteConfig> = [
 
 const router = new VueRouter({
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  console.log("进入了全局路由守卫");
+  console.log("来自  from ===>>>", from);
+  console.log("要去  to   ===>>>", to);
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.state.user) {
+      next({
+        name: "login",
+        query: {
+          redirect: to.fullPath,
+        },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
