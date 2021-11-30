@@ -40,8 +40,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Form } from "element-ui";
-import request from "@/utils/request";
-import qs from "qs";
 import { login } from "@/services/user";
 
 export default Vue.extend({
@@ -98,6 +96,7 @@ export default Vue.extend({
         if (data.state !== 1) {
           return this.$message.error(data.message);
         } else {
+          this.$store.commit("setUser", data.content);
           // 成功跳转
           this.$router.push({
             name: "home",
