@@ -18,6 +18,16 @@ function redirectLogin () {
   });
 }
 
+function refreshToken () {
+  return axios.create()({
+    method: "POST",
+    url: "/front/user/refresh_token",
+    data: qs.stringify({
+      refreshtoken: store.state.user.refresh_token,
+    }),
+  });
+}
+
 // 请求拦截器
 request.interceptors.request.use(function (config) {
   console.log("接口请求进入 ===>>>", config);
@@ -32,11 +42,13 @@ request.interceptors.request.use(function (config) {
 });
 
 // 响应拦截器
+let isRfreshing = false;
+let requests: any[] = [];
 request.interceptors.response.use(function (response) {
   // 状态码 2xx
   // console.log("请求响应成功 =>", response);
   return response;
-}, function (error) {
+}, async function (error) {
   // 超出 2xx 状态码
   // console.dir(error);
 
@@ -50,21 +62,31 @@ request.interceptors.response.use(function (response) {
         return Promise.reject(error);
       }
 
-      try {
-        const { data } = await axios.create()({
-          method: "POST",
-          url: "/front/user/refresh_token",
-          data: qs.stringify({
-            refreshtoken: store.state.user.refresh_token,
-          }),
+      if (!isRfreshing) {
+        isRfreshing = true;
+        return refreshToken().then(res => {
+          if (!res.data.success) {
+            throw new Error("刷新 Token 失败");
+          }
+          store.commit("setUser", res.data.content);
+          requests.forEach(cb => cb());
+          requests = [];
+          return request(error.config);
+        }).catch(err => {
+          console.log(err);
+          store.commit("setUser", null);
+          redirectLogin();
+          return Promise.reject(error);
+        }).finally(() => {
+          isRfreshing = false;
         });
-        store.commit("setUser", data.content);
-        return request(error.config);
-      } catch (error) {
-        store.commit("setUser", null);
-        redirectLogin();
-        return Promise.reject(error);
       }
+
+      return new Promise(resolve => {
+        requests.push(() => {
+          resolve(request(error.config));
+        });
+      });
     } else if (status === 403) {
       Message.error("没有权限，请联系管理员");
     } else if (status === 404) {
