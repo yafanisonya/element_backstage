@@ -40,7 +40,7 @@
           <el-input v-model="form.icon"></el-input>
         </el-form-item>
         <el-form-item label="是否显示">
-          <el-radio-group v-model="form.resource">
+          <el-radio-group v-model="form.shown">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
@@ -67,24 +67,30 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { createOrUpdateMenu } from "@/services/menu";
+
 export default Vue.extend({
   name: "MenuCreate",
   data() {
     return {
       form: {
         parentId: -1,
-        name: "",
-        href: "",
-        icon: "",
+        name: "1",
+        href: "1",
+        icon: "1",
         orderNum: 0,
-        descrition: "",
+        description: "1",
         shown: false,
       },
     };
   },
   methods: {
-    onSubmit() {
-      console.log("submit!");
+    async onSubmit() {
+      const { data } = await createOrUpdateMenu(this.form);
+      if (data.code === "000000") {
+        this.$message.success("提交成功");
+        this.$router.back();
+      }
     },
   },
 });
