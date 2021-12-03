@@ -100,14 +100,25 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="form.current"
+        :page-sizes="[5, 10, 20]"
+        :page-size="form.size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalCount"
+      >
+      </el-pagination>
     </el-card>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { getAllResources } from "@/services/resource";
+import { getResourcePages } from "@/services/resource";
 import { getResourceCategories } from "@/services/resource-category";
+import { Form } from "element-ui";
 
 export default Vue.extend({
   name: "ResourceList",
@@ -118,8 +129,11 @@ export default Vue.extend({
         name: "",
         url: "",
         categoryId: null,
+        size: 5,
+        current: 1,
       },
       resourceCategories: [],
+      totalCount: 0,
     };
   },
 
@@ -130,9 +144,9 @@ export default Vue.extend({
 
   methods: {
     async loadResources() {
-      const { data } = await getAllResources();
-      this.resources = data.data;
-      console.log("resoucres ===>>>", data);
+      const { data } = await getResourcePages(this.form);
+      this.resources = data.data.records;
+      this.totalCount = data.data.total;
     },
 
     async loadResourceCategories() {
@@ -150,6 +164,17 @@ export default Vue.extend({
 
     onSubmit() {
       console.log("submit");
+    },
+
+    handleSizeChange(val: number) {
+      this.form.size = val;
+      this.form.current = 1;
+      this.loadResources();
+    },
+
+    handleCurrentChange(val: number) {
+      this.form.current = val;
+      this.loadResources();
     },
   },
 });
