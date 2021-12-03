@@ -90,7 +90,12 @@ export default Vue.extend({
       }
     },
     handleEdit(item: any) {
-      console.log(item);
+      this.$router.push({
+        name: "menu-edit",
+        params: {
+          id: item.id,
+        },
+      });
     },
     handleDelete(item: any) {
       this.$confirm("确认删除吗？", "删除提示", {})
