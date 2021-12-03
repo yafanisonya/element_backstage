@@ -24,13 +24,16 @@
             placeholder="请选择上级菜单"
           >
             <el-option
-              label="区域一"
-              value="shanghai"
+              :value="-1"
+              label="无上级菜单"
             ></el-option>
             <el-option
-              label="区域二"
-              value="beijing"
-            ></el-option>
+              :label="item.name"
+              :value="item.id"
+              :key="item.id"
+              v-for="item in parentMenuList"
+            >
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="描述">
@@ -67,7 +70,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { createOrUpdateMenu } from "@/services/menu";
+import { createOrUpdateMenu, getEditMenuInfo } from "@/services/menu";
 
 export default Vue.extend({
   name: "MenuCreate",
@@ -82,7 +85,11 @@ export default Vue.extend({
         description: "1",
         shown: false,
       },
+      parentMenuList: [],
     };
+  },
+  created() {
+    this.loadMenuInfo();
   },
   methods: {
     async onSubmit() {
@@ -90,6 +97,13 @@ export default Vue.extend({
       if (data.code === "000000") {
         this.$message.success("提交成功");
         this.$router.back();
+      }
+    },
+
+    async loadMenuInfo() {
+      const { data } = await getEditMenuInfo(this.$route.params.id || -1);
+      if (data.code === "000000") {
+        this.parentMenuList = data.data.parentMenuList;
       }
     },
   },
