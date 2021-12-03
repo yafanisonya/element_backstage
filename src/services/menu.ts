@@ -17,3 +17,17 @@ export const getEditMenuInfo = (id: string | number = -1) => {
     },
   });
 };
+
+export const getAllMenus = () => {
+  return request({
+    method: "GET",
+    url: "/boss/menu/getAll",
+  });
+};
+
+export const deleteMenu = (id: number) => {
+  return request({
+    method: "DELETE",
+    url: `/boss/menu/${id}`,
+  });
+};
