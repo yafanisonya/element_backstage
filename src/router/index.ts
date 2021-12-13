@@ -70,6 +70,12 @@ const routes: Array<RouteConfig> = [
         name: "menu-edit",
         component: () => import(/* webpackChunkName: 'advert-space' */"@/views/menu/edit.vue"),
       },
+      {
+        path: "/role/:roleId/alloc-menu",
+        name: "alloc-menu",
+        component: () => import(/* webpackChunkName: 'advert-menu' */"@/views/role/alloc-menu.vue"),
+        props: true,
+      },
     ],
   },
   {

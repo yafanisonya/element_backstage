@@ -88,7 +88,7 @@
           min-width="150"
         >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="操作"
           min-width="150"
         >
@@ -103,7 +103,7 @@
               @click="handleDelete(scope.row)"
             >删除</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
