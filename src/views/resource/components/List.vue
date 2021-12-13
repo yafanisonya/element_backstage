@@ -43,14 +43,19 @@
             <el-button
               type="primary"
               @click="onSubmit"
+              :disabled="isLoading"
             >提交</el-button>
-            <el-button>重置</el-button>
+            <el-button
+              @click="onReset"
+              :disabled="isLoading"
+            >重置</el-button>
           </el-form-item>
         </el-form>
 
       </div>
       <el-table
         :data="resources"
+        v-loading="isLoading"
         style="width: 100%; margin-bottom:20px"
       >
         <el-table-column
@@ -104,6 +109,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="form.current"
+        :disabled="isLoading"
         :page-sizes="[5, 10, 20]"
         :page-size="form.size"
         layout="total, sizes, prev, pager, next, jumper"
@@ -134,6 +140,7 @@ export default Vue.extend({
       },
       resourceCategories: [],
       totalCount: 0,
+      isLoading: true,
     };
   },
 
@@ -144,9 +151,11 @@ export default Vue.extend({
 
   methods: {
     async loadResources() {
+      this.isLoading = true;
       const { data } = await getResourcePages(this.form);
       this.resources = data.data.records;
       this.totalCount = data.data.total;
+      this.isLoading = false;
     },
 
     async loadResourceCategories() {
@@ -163,7 +172,8 @@ export default Vue.extend({
     },
 
     onSubmit() {
-      console.log("submit");
+      this.form.current = 1;
+      this.loadResources();
     },
 
     handleSizeChange(val: number) {
@@ -174,6 +184,12 @@ export default Vue.extend({
 
     handleCurrentChange(val: number) {
       this.form.current = val;
+      this.loadResources();
+    },
+
+    onReset() {
+      (this.$refs.form as Form).resetFields();
+      this.form.current = 1;
       this.loadResources();
     },
   },
