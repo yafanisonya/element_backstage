@@ -159,7 +159,7 @@ export default Vue.extend({
         this.filterParams.endCreateTime = "";
       }
       const { data } = await getUserPages(this.filterParams);
-      data.data.records.map((item) => {
+      data.data.records.map((item: { createTime: string | any[] }) => {
         item.createTime = item.createTime.slice(0, 10);
       });
       this.users = data.data.records;
