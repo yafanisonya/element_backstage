@@ -73,7 +73,9 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .aside {
   .el-menu {
-    min-height: 100vh;
+    position: fixed;
+    width: 200px;
+    height: 100vh;
   }
 }
 </style>

@@ -15,7 +15,7 @@
           >
             <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item class="top_button">
             <el-button
               type="primary"
               @click="onSubmit"
@@ -179,5 +179,16 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
+::v-deep .el-form {
+  display: flex;
+}
+
+::v-deep .el-form-item {
+  margin-right: 20px;
+}
+
+::v-deep .top_button {
+  margin-top: 40px;
+}
 </style>

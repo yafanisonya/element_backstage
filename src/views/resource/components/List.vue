@@ -110,7 +110,7 @@
         @current-change="handleCurrentChange"
         :current-page="form.current"
         :disabled="isLoading"
-        :page-sizes="[5, 10, 20]"
+        :page-sizes="[10, 15, 20]"
         :page-size="form.size"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalCount"
@@ -135,7 +135,7 @@ export default Vue.extend({
         name: "",
         url: "",
         categoryId: null,
-        size: 5,
+        size: 10,
         current: 1,
       },
       resourceCategories: [],
@@ -197,4 +197,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-form {
+  display: flex;
+}
+
+::v-deep .el-form-item {
+  margin-right: 20px;
+}
 </style>
