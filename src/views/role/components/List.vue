@@ -66,7 +66,7 @@
                   }
                 })"
               >分配菜单</el-button>
-              <el-button type="text">分配资源</el-button>
+              <!-- <el-button type="text">分配资源</el-button> -->
             </div>
             <div>
               <el-button
