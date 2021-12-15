@@ -12,7 +12,6 @@
       class="avatar-uploader"
       action="https://jsonplaceholder.typicode.com/posts/"
       :show-file-list="false"
-      :before-upload="beforeAvatarUpload"
       :http-request="handleUpload"
     >
       <img
