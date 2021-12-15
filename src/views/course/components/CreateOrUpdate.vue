@@ -50,7 +50,12 @@
           </el-form-item>
         </div>
         <div v-show="activeStep === 1">
-          课程封面
+          <el-form-item label="课程封面">
+            <course-image v-model="course.courseListImg"></course-image>
+          </el-form-item>
+          <el-form-item label="介绍封面">
+            <course-image v-model="course.courseImgUrl"></course-image>
+          </el-form-item>
         </div>
         <div v-show="activeStep === 2">
           <el-form-item label="售卖价格">
@@ -90,10 +95,39 @@
             >
             </el-switch>
           </el-form-item>
-          <template v-if="coruse.activityCourse">
-            <!-- <el-form-item label="开始时间">
-              <el-date-picker v-model="course.activityCourseDto.beginTime"></el-date-picker>
-            </el-form-item> -->
+          <template v-if="course.activityCourse">
+            <el-form-item label="开始时间">
+              <el-date-picker
+                v-model="course.activityCourseDTO.beginTime"
+                type="date"
+                placeholder="选择日期时间"
+                value-format="yyyy-MM-dd"
+              />
+            </el-form-item>
+            <el-form-item label="结束时间">
+              <el-date-picker
+                v-model="course.activityCourseDTO.endTime"
+                type="date"
+                placeholder="选择日期时间"
+                value-format="yyyy-MM-dd"
+              />
+            </el-form-item>
+            <el-form-item label="秒杀价">
+              <el-input
+                v-model.number="course.activityCourseDTO.amount"
+                type="number"
+              >
+                <template slot="append">元</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="秒杀库存">
+              <el-input
+                v-model.number="course.activityCourseDTO.stock"
+                type="number"
+              >
+                <template slot="append">个</template>
+              </el-input>
+            </el-form-item>
           </template>
         </div>
         <div v-show="activeStep === 4">
@@ -102,6 +136,9 @@
             <el-button type="primary">保存</el-button>
           </el-form-item>
         </div>
+        <el-form-item v-if="activeStep >=0 && activeStep <4">
+          <el-button @click="activeStep++">下一步</el-button>
+        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -109,8 +146,11 @@
 
 <script lang="ts">
 import Vue from "vue";
+import CourseImage from "./CourseImage.vue";
+
 export default Vue.extend({
   name: "CourseCreate",
+  components: { CourseImage },
   data() {
     return {
       activeStep: 0,
@@ -135,6 +175,12 @@ export default Vue.extend({
         sales: 0,
         discountsTag: "",
         activityCourse: false,
+        activityCourseDTO: {
+          beginTime: "",
+          endTime: "",
+          amount: 0,
+          stock: 0,
+        },
       },
     };
   },
