@@ -23,7 +23,7 @@ const routes: Array<RouteConfig> = [
       {
         path: "",
         name: "home",
-        component: () => import(/* webpackChunkName: 'home' */"@/views/home/index.vue"),
+        component: () => import(/* webpackChunkName: 'role' */"@/views/role/index.vue"),
       },
       {
         path: "/role",
@@ -50,16 +50,16 @@ const routes: Array<RouteConfig> = [
         name: "user",
         component: () => import(/* webpackChunkName: 'user' */"@/views/user/index.vue"),
       },
-      {
-        path: "/advert",
-        name: "advert",
-        component: () => import(/* webpackChunkName: 'advert' */"@/views/advert/index.vue"),
-      },
-      {
-        path: "/advert-space",
-        name: "advert-space",
-        component: () => import(/* webpackChunkName: 'advert-space' */"@/views/advert-space/index.vue"),
-      },
+      // {
+      //   path: "/advert",
+      //   name: "advert",
+      //   component: () => import(/* webpackChunkName: 'advert' */"@/views/advert/index.vue"),
+      // },
+      // {
+      //   path: "/advert-space",
+      //   name: "advert-space",
+      //   component: () => import(/* webpackChunkName: 'advert-space' */"@/views/advert-space/index.vue"),
+      // },
       {
         path: "/menu/create",
         name: "menu-create",

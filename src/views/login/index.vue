@@ -1,5 +1,8 @@
 <template>
   <div class="login">
+    <header>
+      <h1>Fanison后台管理系统</h1>
+    </header>
     <el-form
       :model="form"
       :rules="rules"
@@ -114,10 +117,24 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .login {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background: #e9eef3;
+
+  header h1 {
+    margin-bottom: 30px;
+    width: 290px;
+
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 3rem;
+    font-weight: 300;
+    text-align: center;
+    text-decoration: none;
+    transition: text-shadow 0.3s;
+    letter-spacing: 3px;
+  }
 
   .login-form {
     padding: 20px;

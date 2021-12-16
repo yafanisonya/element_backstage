@@ -86,56 +86,26 @@
         </el-form-item>
       </div>
       <div v-show="activeStep === 3">
-        <el-form-item label="限时秒杀开关">
+        <el-form-item label="课程详情">
+          <text-editor v-model="course.courseDescriptionMarkDown" />
+        </el-form-item>
+        <el-form-item label="是否发布">
           <el-switch
-            v-model="course.activityCourse"
+            v-model="course.status"
+            :active-value="1"
+            :inactive-value="0"
             active-color="#13ce66"
             inactive-color="#ff4949"
-          >
-          </el-switch>
+          />
         </el-form-item>
-        <template v-if="course.activityCourse">
-          <el-form-item label="开始时间">
-            <el-date-picker
-              v-model="course.activityCourseDTO.beginTime"
-              type="date"
-              placeholder="选择日期时间"
-              value-format="yyyy-MM-dd"
-            />
-          </el-form-item>
-          <el-form-item label="结束时间">
-            <el-date-picker
-              v-model="course.activityCourseDTO.endTime"
-              type="date"
-              placeholder="选择日期时间"
-              value-format="yyyy-MM-dd"
-            />
-          </el-form-item>
-          <el-form-item label="秒杀价">
-            <el-input
-              v-model.number="course.activityCourseDTO.amount"
-              type="number"
-            >
-              <template slot="append">元</template>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="秒杀库存">
-            <el-input
-              v-model.number="course.activityCourseDTO.stock"
-              type="number"
-            >
-              <template slot="append">个</template>
-            </el-input>
-          </el-form-item>
-        </template>
-      </div>
-      <div v-show="activeStep === 4">
-        课程详情
         <el-form-item>
-          <el-button type="primary">保存</el-button>
+          <el-button
+            type="primary"
+            @click="handleSave"
+          >保存</el-button>
         </el-form-item>
       </div>
-      <el-form-item v-if="activeStep >=0 && activeStep <4">
+      <el-form-item v-if="activeStep >=0 && activeStep <3">
         <el-button @click="activeStep++">下一步</el-button>
       </el-form-item>
     </el-form>
@@ -145,12 +115,15 @@
 <script lang="ts">
 import Vue from "vue";
 import CourseImage from "./CourseImage.vue";
+import TextEditor from "@/components/TextEditor/index.vue";
 import { saveOrUpdateCourse, getCourseById } from "@/services/course";
-import moment from "moment";
 
 export default Vue.extend({
   name: "CourseCreate",
-  components: { CourseImage },
+  components: {
+    CourseImage,
+    TextEditor,
+  },
   props: {
     isEdit: {
       type: Boolean,
@@ -168,7 +141,6 @@ export default Vue.extend({
         { title: "基本信息", icon: "el-icon-edit" },
         { title: "课程封面", icon: "el-icon-edit" },
         { title: "销售信息", icon: "el-icon-edit" },
-        { title: "秒杀活动", icon: "el-icon-edit" },
         { title: "课程详情", icon: "el-icon-edit" },
       ],
       course: {
